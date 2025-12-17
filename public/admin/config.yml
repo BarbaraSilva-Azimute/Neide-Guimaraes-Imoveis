@@ -1,0 +1,140 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  # 1. HOME (Singleton)
+  - name: "pages"
+    label: "Páginas"
+    files:
+      - name: "home"
+        label: "Home"
+        file: "content/pages/home.md"
+        fields:
+          # Hero
+          - {label: "Hero Title", name: "hero_title", widget: "string", default: "Especialista nos melhores endereços de Manaus."}
+          - {label: "Hero Subtitle", name: "hero_subtitle", widget: "string", default: "Imóveis de médio e alto padrão."}
+          - {label: "Hero Image", name: "hero_image", widget: "image", default: "/assets/hero-bg-final.jpg"}
+          - {label: "CTA Primário (Label)", name: "hero_cta_primary_label", widget: "string", default: "Ver imóveis"}
+          - {label: "CTA Secundário (Label)", name: "hero_cta_secondary_label", widget: "string", default: "Falar no WhatsApp"}
+          
+          # Authority
+          - {label: "Authority Title", name: "authority_title", widget: "string", default: "Imóveis selecionados. Negociações seguras."}
+          - {label: "Authority Text", name: "authority_text", widget: "text", default: "Atuo há mais de 20 anos no mercado."}
+          - label: "Authority Cards"
+            name: "authority_cards"
+            widget: "list"
+            fields:
+              - {label: "Título", name: "title", widget: "string"}
+              - {label: "Texto", name: "text", widget: "string"}
+          
+          # Final CTA
+          - {label: "Final CTA Title", name: "final_cta_title", widget: "string", default: "Vamos encontrar o imóvel certo?"}
+          - {label: "Final CTA Text", name: "final_cta_text", widget: "text", default: "Me diga o que você procura."}
+          - {label: "Final CTA Button", name: "final_cta_button_label", widget: "string", default: "Falar no WhatsApp"}
+          
+          # SEO
+          - {label: "Meta Title", name: "title", widget: "string"}
+          - {label: "Meta Description", name: "description", widget: "text"}
+
+      - name: "sobre"
+        label: "Sobre a Neide"
+        file: "content/pages/sobre.md"
+        fields:
+          - {label: "Título", name: "title", widget: "string", default: "Sobre Neide Guimarães"}
+          - {label: "Texto Principal", name: "text", widget: "markdown"}
+          - {label: "Foto", name: "photo", widget: "image"}
+          - {label: "Anos de Experiência", name: "years_experience", widget: "string", default: "20+"}
+          - {label: "Negócios Fechados (opcional)", name: "deals_done", widget: "string", required: false}
+          - {label: "SEO Title", name: "seo_title", widget: "string"}
+          - {label: "SEO Description", name: "seo_description", widget: "text"}
+
+      - name: "contato"
+        label: "Página de Contato"
+        file: "content/pages/contato.md"
+        fields:
+          - {label: "Telefone", name: "phone", widget: "string"}
+          - {label: "WhatsApp", name: "whatsapp", widget: "string"}
+          - {label: "Email", name: "email", widget: "string"}
+          - {label: "Endereço", name: "address", widget: "string"}
+          - {label: "Cidade", name: "city", widget: "string", default: "Manaus"}
+          - {label: "Estado", name: "state", widget: "string", default: "AM"}
+          - {label: "SEO Title", name: "seo_title", widget: "string"}
+          - {label: "SEO Description", name: "seo_description", widget: "text"}
+
+  # 2. IMÓVEIS (Collection)
+  - name: "imoveis"
+    label: "Imóveis"
+    folder: "content/imoveis"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Título", name: "title", widget: "string"}
+      - {label: "Slug", name: "slug", widget: "string"}
+      - {label: "Status", name: "status", widget: "select", options: ["disponivel", "reservado", "vendido", "alugado"], default: "disponivel"}
+      - {label: "Finalidade", name: "finalidade", widget: "select", options: ["Venda", "Aluguel"]}
+      - {label: "Tipo", name: "tipo", widget: "select", options: ["Apartamento", "Casa", "Cobertura", "Sala Comercial", "Terreno", "Galpão"]}
+      - {label: "Bairro", name: "bairro", widget: "string"}
+      - label: "Preço"
+        name: "preco"
+        widget: "object"
+        fields:
+          - {label: "Valor", name: "valor", widget: "number", value_type: "float"}
+          - {label: "Recorrência", name: "recorrencia", widget: "string", required: false}
+      - {label: "Área (m²)", name: "area_m2", widget: "number"}
+      - {label: "Quartos", name: "quartos", widget: "number"}
+      - {label: "Banheiros", name: "banheiros", widget: "number"}
+      - {label: "Vagas", name: "vagas", widget: "number"}
+      - {label: "Descrição Completa", name: "body", widget: "markdown"}
+      - {label: "Amenities", name: "amenities", widget: "list"}
+      - {label: "Imagem de Destaque", name: "featured_image", widget: "image"}
+      - {label: "Galeria", name: "gallery", widget: "list", field: {label: "Imagem", name: "image", widget: "image"}}
+      - {label: "Destaque na Home", name: "destaque", widget: "boolean", default: false}
+      
+      # Endereço para Mapa
+      - label: "Endereço"
+        name: "endereco"
+        widget: "object"
+        fields:
+           - {label: "Latitude", name: "lat", widget: "number", value_type: "float", required: false}
+           - {label: "Longitude", name: "lng", widget: "number", value_type: "float", required: false}
+           - {label: "Mostrar Mapa", name: "mostrar_mapa", widget: "boolean", default: true}
+
+      - label: "SEO"
+        name: "seo"
+        widget: "object"
+        required: false
+        fields:
+           - {label: "Meta Title", name: "title", widget: "string"}
+           - {label: "Meta Description", name: "description", widget: "text"}
+
+  # 5. DEPOIMENTOS (Collection)
+  - name: "depoimentos"
+    label: "Depoimentos"
+    folder: "content/depoimentos"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Nome do Cliente", name: "name", widget: "string"}
+      - {label: "Depoimento", name: "text", widget: "text"}
+      - {label: "Bairro/Local", name: "bairro", widget: "string"}
+      - {label: "Tipo de Negociação", name: "tipo_negociacao", widget: "string", hint: "Ex: Comprou em Ponta Negra"}
+
+  # 6. CONFIGURAÇÕES GLOBAIS (Singleton)
+  - name: "settings"
+    label: "Configurações Globais"
+    files:
+      - name: "site"
+        label: "Configurações do Site"
+        file: "content/settings/site.md"
+        fields:
+          - {label: "Nome do Site", name: "site_name", widget: "string", default: "Neide Guimarães Imóveis"}
+          - {label: "Cidade Padrão", name: "default_city", widget: "string", default: "Manaus"}
+          - {label: "WhatsApp (Número)", name: "whatsapp_number", widget: "string", hint: "Apenas números, ex: 5592981122604"}
+          - {label: "Mensagem Padrão WhatsApp", name: "whatsapp_message", widget: "string", default: "Olá, gostaria de mais informações."}
+          - {label: "CRECI", name: "creci", widget: "string"}
+          - {label: "Título SEO Padrão", name: "seo_title", widget: "string"}
+          - {label: "Descrição SEO Padrão", name: "seo_description", widget: "text"}
